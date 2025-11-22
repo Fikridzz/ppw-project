@@ -1,5 +1,7 @@
 @extends('layouts.app')
+
 @section('title', 'Dashboard')
+
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
@@ -15,7 +17,7 @@
                                     selamat bekerja <span class="fw-bold"></span> nikmati harimu
                                     dengan lebih baik
                                 </p>
-                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">Lihat Data</a>
+                                <a href="{{ route('products.index') }}" class="btn btn-sm btn-outline-primary">Lihat Data</a>
                             </div>
                         </div>
                         <div class="col-sm-5 text-center text-sm-left">
@@ -37,8 +39,7 @@
                             <div class="card-body">
                                 <div class="card-title d-flex align-items-start justify-content-between">
                                     <div class="avatar flex-shrink-0">
-                                        <img src="../assets/img/icons/unicons/chart-success.png" alt="chart
-success"
+                                        <img src="../assets/img/icons/unicons/chart-success.png" alt="chart success"
                                             class="rounded" />
                                     </div>
                                     <div class="dropdown">

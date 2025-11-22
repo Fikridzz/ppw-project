@@ -1,11 +1,11 @@
 @extends('layouts.app')
-@section('title', 'Tambah Produk')
+@section('title', 'Edit Produk')
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         {{-- Breadcrumb dinamis --}}
         <x-breadcrumb :items="[
             'Produk' => route('products.index'),
-            'Tambah Produk' => '',
+            'Edit Produk' => '',
         ]" />
         <!-- Basic Layout & Basic with Icons -->
         <div class="row">
@@ -18,10 +18,12 @@
             <div class="col-xxl">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('products.update', $product->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Foto
+                                <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nama
 
                                 </label>
 
@@ -34,21 +36,31 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
+                                    <!-- Preview Foto Lama -->
+                                    @if (!empty($product->foto))
+                                        <div class="mt-2">
+                                            <img src="{{ asset('storage/' . $product->foto) }}" alt="Foto Produk"
+                                                class="img-thumbnail" style="max-width: 150px; height: auto;">
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nama
 
-                                <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nama </label>
+                                </label>
 
                                 <div class="col-sm-10">
                                     <div class="input-group input-group-merge">
-                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                class="bx bx-package"></i></span>
+                                        <span id="basic-icon-default-fullname2" class="input-group-text">
+                                            <i class="bx bx-package"></i>
+                                        </span>
                                         <input type="text" name="nama"
                                             class="form-control @error('nama') is-invalid @enderror"
                                             id="basic-icon-default-fullname" placeholder="Silahkan isi nama produk"
                                             aria-label="Silahkan isi nama produk"
-                                            aria-describedby="basic-icon-default-fullname2" value="{{ old('nama') }}" />
+                                            aria-describedby="basic-icon-default-fullname2"
+                                            value="{{ old('nama', $product->nama) }}" />
                                         @error('nama')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -58,13 +70,13 @@
                             <div class="row mb-3">
 
                                 <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Kategori </label>
+
                                 <div class="col-sm-10">
                                     <div class="input-group input-group-merge">
                                         <span id="basic-icon-default-fullname2" class="input-group-text"><i
                                                 class="bx bx-package"></i></span>
                                         <select name="kategori_id" id="kategori_id" class="form-select" required>
-
-                                            <option value="" disabled selected>-- Pilih Kategori --</option>
+                                            <option value="">-- Pilih Kategori --</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}"
                                                     {{ old('kategori_id') == $category->id ? 'selected' : '' }}>
@@ -79,7 +91,6 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-
                                 <label class="col-sm-2 form-label" for="basic-icon-default-message">Deskripsi</label>
 
                                 <div class="col-sm-10">
@@ -88,7 +99,7 @@
                                                 class="bx bx-comment-detail"></i></span>
                                         <textarea name="deskripsi" id="basic-icon-default-message" class="form-control @error('deskripsi') is-invalid @enderror"
                                             placeholder="Silahkan isi deskripsi produk" aria-label="Silahkan isi deskripsi produk"
-                                            aria-describedby="basic-icon-default-message2">{{ old('deskripsi') }}</textarea>
+                                            aria-describedby="basic-icon-default-message2">{{ old('deskripsi', $product->deskripsi) }}</textarea>
                                         @error('deskripsi')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -106,7 +117,8 @@
                                         <input type="text" name="harga" id="basic-icon-default-phone"
                                             class="form-control phone-mask @error('harga') is-invalid @enderror"
                                             placeholder="Rp 0" aria-label="Harga"
-                                            aria-describedby="basic-icon-default-phone2" value="{{ old('harga') }}" />
+                                            aria-describedby="basic-icon-default-phone2"
+                                            value="{{ old('harga', $product->harga) }}" />
                                         @error('harga')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -114,9 +126,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-
                                 <label class="col-sm-2 form-label" for="basic-icon-default-phone">Stok</label>
-
                                 <div class="col-sm-10">
                                     <div class="input-group input-group-merge">
                                         <span id="basic-icon-default-phone2" class="input-group-text"><i
@@ -124,7 +134,7 @@
                                         <input type="text" name="stok" id="basic-icon-default-phone"
                                             class="form-control phone-mask @error('stok') is-invalid @enderror"
                                             placeholder="10" aria-label="10" aria-describedby="basic-icon-default-phone2"
-                                            value="{{ old('stok') }}" />
+                                            value="{{ old('stok', $product->stok) }}" />
                                         @error('stok')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
